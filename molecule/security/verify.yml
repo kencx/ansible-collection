@@ -1,0 +1,22 @@
+---
+- name: Verify
+  hosts: all
+  gather_facts: false
+  tasks:
+  - name: SSH is running
+    service:
+      name: ssh
+      state: started
+      enabled: true
+
+  - name: ufw
+    service:
+      name: ufw
+      state: started
+      enabled: true
+
+  - name: fail2ban is running and enabled
+    service:
+      name: fail2ban
+      state: started
+      enabled: true

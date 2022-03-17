@@ -1,0 +1,7 @@
+---
+ssh_port: 22
+
+# groups with sudo privileges - sudo, wheel etc.
+sudoers: [sudo]
+
+fail2ban_config_file: "jail.local.j2"

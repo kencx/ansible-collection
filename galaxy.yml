@@ -1,0 +1,30 @@
+namespace: kencx
+name: homelab
+version: 0.0.1
+readme: README.md
+authors:
+- kencx <ken@cheo.dev>
+
+description: your collection description
+license:
+  - MIT
+tags: []
+
+# Collections that this collection requires to be installed for it to be usable. The key of the dict is the
+# collection label 'namespace.name'. The value is a version range
+# L(specifiers,https://python-semanticversion.readthedocs.io/en/latest/#requirement-specification). Multiple version
+# range specifiers can be set and are separated by ','
+dependencies: {}
+
+repository: https://github.com/kencx/homelab-collection
+
+# documentation: http://docs.example.com
+# homepage: http://example.com
+# issues: http://example.com/issue/tracker
+
+# A list of file glob-like patterns used to filter any files or directories that should not be included in the build
+# artifact. A pattern is matched from the relative path of the file or directory of the collection directory. This
+# uses 'fnmatch' to match the files or directories. Some directories and files like 'galaxy.yml', '*.pyc', '*.retry',
+# and '.git' are always filtered
+build_ignore: []
+

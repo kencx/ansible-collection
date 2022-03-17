@@ -1,0 +1,25 @@
+---
+- name: Install ufw
+  become: true
+  apt:
+    name: ufw
+    state: present
+
+- name: Configure ufw incoming/outgoing rules
+  become: true
+  ufw:
+    direction: "{{ item.direction }}"
+    policy: "{{ item.policy }}"
+    state: enabled
+  with_items:
+    - {direction: outgoing, policy: allow}
+    - {direction: incoming, policy: deny}
+
+- name: Configure ufw ports
+  become: true
+  ufw:
+    rule: "{{ item.rule }}"
+    port: "{{ item.port }}"
+    proto: "{{ item.proto }}"
+  with_items:
+    - {rule: 'allow', port: '{{ ssh_port }}', proto: 'tcp'}

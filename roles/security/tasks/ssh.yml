@@ -1,0 +1,79 @@
+---
+- name: Install openssh-server
+  apt:
+    name: openssh-server
+    state: present
+
+  # required for validation
+- name: Create /run/sshd
+  file:
+    path: "/run/sshd"
+    state: directory
+
+- name: Secure SSH config
+  become: true
+  lineinfile:
+    dest: /etc/ssh/sshd_config
+    regexp: "{{ item.regexp }}"
+    line: "{{ item.line }}"
+    state: present
+    validate: 'sshd -t -f %s'
+  with_items:
+    - regexp: "^#?Port"
+      line: "Port {{ ssh_port }}"
+
+    # only allow key based authentication
+    - regexp: "^#?PubkeyAuthentication"
+      line: "PubkeyAuthentication yes"
+    - regexp: "^#?ChallengeResponseAuthentication"
+      line: "ChallengeResponseAuthentication no"
+    - regexp: "^#?PasswordAuthentication"
+      line: "PasswordAuthentication no"
+    - regexp: "^#?KerberosAuthentication"
+      line: "KerberosAuthentication no"
+
+      # disable root login
+    - regexp: "^#?PermitRootLogin"
+      line: "PermitRootLogin no"
+    - regexp: "^#?PermitEmptyPasswords"
+      line: "PermitEmptyPasswords no"
+    - regexp: "^#?KerberosOrLocalPasswd"
+      line: "KerberosOrLocalPasswd no"
+
+      # disable X11 Forwarding
+    - regexp: "^#?X11Forwarding"
+      line: "X11Forwarding no"
+    - regexp: "^#?X11UseLocalhost"
+      line: "X11UseLocalhost yes"
+
+      # disable TCP Forwarding
+    - regexp: "^#?AllowTcpForwarding"
+      line: "AllowTcpForwarding no"
+    - regexp: "^#?TCPKeepAlive"
+      line: "TCPKeepAlive no"
+
+      # disable Agent Forwarding
+    - regexp: "^#?AllowAgentForwarding"
+      line: "AllowAgentForwarding no"
+    - regexp: "^#?GatewayPorts"
+      line: "GatewayPorts no"
+
+      # ignore rhosts
+    - regexp: "^#?IgnoreRhosts"
+      line: "IgnoreRhosts yes"
+
+    - regexp: "^#?PrintMotd"
+      line: "PrintMotd no"
+    - regexp: "^#?PrintLastLog"
+      line: "PrintLastLog yes"
+
+    - regexp: "^#?LoginGraceTime"
+      line: "LoginGraceTime 30"
+    - regexp: "^#?MaxAuthTries"
+      line: "MaxAuthTries 3"
+    - regexp: "^#?MaxSessions"
+      line: "MaxSessions 3"
+    - regexp: "^#?MaxStartups"
+      line: "MaxStartups 3"
+
+  notify: restart ssh
