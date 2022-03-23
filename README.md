@@ -8,6 +8,7 @@ To debug roles, run:
 
 ```bash
 $ molecule converge -s security
+$ molecule verify -s security
 ```
 
 When running roles with `service`, systemd is required. However,
@@ -15,4 +16,5 @@ When running roles with `service`, systemd is required. However,
 [issues](https://github.com/ansible-community/molecule/discussions/3108) with
 running systemd in Docker containers.
 
-Additionally, `apt update` is not properly in the Debian 10 container.
+Additionally, `apt update` is not working in Debian 10 container due to
+"oldstable".

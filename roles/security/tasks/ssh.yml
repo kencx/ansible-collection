@@ -8,6 +8,9 @@
 - name: Create /run/sshd
   file:
     path: "/run/sshd"
+    owner: root
+    group: root
+    mode: 0755
     state: directory
 
 - name: Secure SSH config
@@ -27,18 +30,10 @@
       line: "PubkeyAuthentication yes"
     - regexp: "^#?ChallengeResponseAuthentication"
       line: "ChallengeResponseAuthentication no"
-    - regexp: "^#?PasswordAuthentication"
-      line: "PasswordAuthentication no"
     - regexp: "^#?KerberosAuthentication"
       line: "KerberosAuthentication no"
-
-      # disable root login
-    - regexp: "^#?PermitRootLogin"
-      line: "PermitRootLogin no"
     - regexp: "^#?PermitEmptyPasswords"
       line: "PermitEmptyPasswords no"
-    - regexp: "^#?KerberosOrLocalPasswd"
-      line: "KerberosOrLocalPasswd no"
 
       # disable X11 Forwarding
     - regexp: "^#?X11Forwarding"
@@ -55,8 +50,6 @@
       # disable Agent Forwarding
     - regexp: "^#?AllowAgentForwarding"
       line: "AllowAgentForwarding no"
-    - regexp: "^#?GatewayPorts"
-      line: "GatewayPorts no"
 
       # ignore rhosts
     - regexp: "^#?IgnoreRhosts"
@@ -68,12 +61,53 @@
       line: "PrintLastLog yes"
 
     - regexp: "^#?LoginGraceTime"
-      line: "LoginGraceTime 30"
+      line: "LoginGraceTime {{ ssh_login_grace_time }}"
     - regexp: "^#?MaxAuthTries"
-      line: "MaxAuthTries 3"
+      line: "MaxAuthTries {{ ssh_max_auth_tries }}"
     - regexp: "^#?MaxSessions"
-      line: "MaxSessions 3"
+      line: "MaxSessions {{ ssh_max_sessions }}"
     - regexp: "^#?MaxStartups"
-      line: "MaxStartups 3"
+      line: "MaxStartups {{ ssh_max_startups }}"
 
+- name: Disable SSH Root Login
+  become: true
+  lineinfile:
+    dest: /etc/ssh/sshd_config
+    regexp: "{{ item.regexp }}"
+    line: "{{ item.line }}"
+    state: present
+    validate: 'sshd -t -f %s'
+  with_items:
+    - regexp: "^#?PermitRootLogin"
+      line: "PermitRootLogin no"
+  when:
+    ssh_disable_root_login | bool
+
+- name: Disable SSH Password Authentication
+  become: true
+  lineinfile:
+    dest: /etc/ssh/sshd_config
+    regexp: "{{ item.regexp }}"
+    line: "{{ item.line }}"
+    state: present
+    validate: 'sshd -t -f %s'
+  with_items:
+  - regexp: "^#?PasswordAuthentication"
+    line: "PasswordAuthentication no"
+  when:
+    ssh_disable_password_auth | bool
+
+- name: Disable Gateway Ports
+  become: true
+  lineinfile:
+    dest: /etc/ssh/sshd_config
+    regexp: "{{ item.regexp }}"
+    line: "{{ item.line }}"
+    state: present
+    validate: 'sshd -t -f %s'
+  with_items:
+  - regexp: "^#?GatewayPorts"
+    line: "GatewayPorts no"
+  when:
+    ssh_diable_gateway_ports | bool
   notify: restart ssh
