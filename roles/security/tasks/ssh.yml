@@ -109,5 +109,5 @@
   - regexp: "^#?GatewayPorts"
     line: "GatewayPorts no"
   when:
-    ssh_diable_gateway_ports | bool
+    ssh_disable_gateway_ports | bool
   notify: restart ssh
