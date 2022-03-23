@@ -2,27 +2,36 @@
 dependency:
   name: galaxy
 driver:
-  name: docker
+  name: vagrant
+  provider:
+    name: virtualbox
 platforms:
-  - name: ubuntu2004
-    image: "geerlingguy/docker-ubuntu2004-ansible:latest"
-    pre_build_image: true
-    privileged: true
-    command: ${MOLECULE_DOCKER_COMMAND:-""}
-    volumes:
-      - /sys/fs/cgroup:/sys/fs/cgroup:ro
-  - name: debian10
-    image: "geerlingguy/docker-debian10-ansible:latest"
-    pre_build_image: true
-    privileged: true
-    command: ${MOLECULE_DOCKER_COMMAND:-""}
-    volumes:
-      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+  - name: instance
+    box: generic/debian10
+    box_version: 3.6.10
+    cpus: 1
+    memory: 512
+
+  # docker
+  # - name: ubuntu2004
+  #   image: "geerlingguy/docker-ubuntu2004-ansible:latest"
+  #   pre_build_image: true
+  #   privileged: true
+  #   command: ${MOLECULE_DOCKER_COMMAND:-""}
+  #   volumes:
+  #     - /sys/fs/cgroup:/sys/fs/cgroup:ro
+  # - name: debian10
+  #   image: "geerlingguy/docker-debian10-ansible:latest"
+  #   pre_build_image: true
+  #   privileged: true
+  #   command: ${MOLECULE_DOCKER_COMMAND:-""}
+  #   volumes:
+  #     - /sys/fs/cgroup:/sys/fs/cgroup:ro
 provisioner:
   name: ansible
 verifier:
   name: ansible
 
-lint: |
-  set -e
-  ansible-lint .
+# lint: |
+#   set -e
+#   ansible-lint .
