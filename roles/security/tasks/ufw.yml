@@ -10,7 +10,6 @@
   ufw:
     direction: "{{ item.direction }}"
     policy: "{{ item.policy }}"
-    state: enabled
   with_items:
     - {direction: outgoing, policy: allow}
     - {direction: incoming, policy: deny}
@@ -23,3 +22,4 @@
     proto: "{{ item.proto }}"
   with_items:
     - {rule: 'allow', port: '{{ ssh_port }}', proto: 'tcp'}
+  notify: restart ufw

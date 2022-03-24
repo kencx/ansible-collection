@@ -1,12 +1,20 @@
 ---
-# handlers file for security
-#
 - name: restart ssh
   service:
     name: ssh
     state: restarted
+  when:
+    - skip_handlers | default("false") == "false"
 
 - name: restart fail2ban
   service:
     name: fail2ban
     state: restarted
+  when:
+    - skip_handlers | default("false") == "false"
+
+- name: restart ufw
+  ufw:
+    state: reloaded
+  when:
+    - skip_handlers | default("false") == "false"

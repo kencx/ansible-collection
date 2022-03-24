@@ -13,13 +13,4 @@
     owner: root
     group: root
     mode: 0644
-  # notify: restart fail2ban
-
-- name: Ensure fail2ban is running and enabled
-  become: true
-  service:
-    name: fail2ban
-    state: started
-    enabled: true
-  when:
-    start_fail2ban | bool
+  notify: restart fail2ban

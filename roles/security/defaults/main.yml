@@ -1,4 +1,5 @@
 ---
+# ssh
 ssh_port: 22
 ssh_disable_root_login: true
 ssh_disable_password_auth: true
@@ -11,5 +12,8 @@ ssh_max_startups: 3
 # groups with sudo privileges - sudo, wheel etc.
 sudoers: [sudo]
 
+# fail2ban
 fail2ban_config_file: "jail.local.j2"
-start_fail2ban: true
+
+# handlers
+skip_handlers: false
