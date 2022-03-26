@@ -1,7 +1,8 @@
 # Ansible Collection - kencx.homelab
 
-- security provides basic hardening such as configuring `sudo`, SSH hardening, installing ufw
-  and fail2ban
+- `security` provides basic hardening such as configuring `sudo`, SSH hardening,
+  installing ufw and fail2ban
+- `terraform` installs Terraform CLI
 
 ## Molecule
 To debug roles, run:

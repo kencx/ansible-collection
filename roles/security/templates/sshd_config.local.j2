@@ -1,0 +1,121 @@
+{{ ansible_managed | comment }}
+
+Port {{ ssh_port }}
+#AddressFamily any
+#ListenAddress 0.0.0.0
+#ListenAddress ::
+
+#HostKey /etc/ssh/ssh_host_rsa_key
+#HostKey /etc/ssh/ssh_host_ecdsa_key
+#HostKey /etc/ssh/ssh_host_ed25519_key
+
+# Ciphers and keying
+#RekeyLimit default none
+
+# Logging
+#SyslogFacility AUTH
+#LogLevel INFO
+
+# Authentication
+{% if ssh_disable_root_login == true %}
+PermitRootLogin no
+{% else %}
+PermitRootLogin yes
+{% endif %}
+
+#StrictModes yes
+PermitEmptyPasswords no
+LoginGraceTime {{ ssh_login_grace_time }}
+MaxAuthTries {{ ssh_max_auth_tries }}
+MaxSessions {{ ssh_max_sessions }}
+MaxStartups {{ ssh_max_startups }}
+
+PubkeyAuthentication yes
+{% if ssh_disable_password_auth == true %}
+PasswordAuthentication no
+{% else %}
+PasswordAuthentication yes
+{% endif %}
+
+# Need host keys in /etc/ssh/ssh_known_hosts
+HostbasedAuthentication no
+#IgnoreUserKnownHosts no
+
+# Don't read the user's ~/.rhosts and ~/.shosts files
+IgnoreRhosts yes
+ChallengeResponseAuthentication no
+
+# Kerberos options
+KerberosAuthentication no
+#KerberosOrLocalPasswd yes
+#KerberosTicketCleanup yes
+#KerberosGetAFSToken no
+
+# GSSAPI options
+GSSAPIAuthentication no
+#GSSAPICleanupCredentials yes
+#GSSAPIStrictAcceptorCheck yes
+#GSSAPIKeyExchange no
+
+# Set this to 'yes' to enable PAM authentication, account processing,
+# and session processing. If this is enabled, PAM authentication will
+# be allowed through the ChallengeResponseAuthentication and
+# PasswordAuthentication.  Depending on your PAM configuration,
+# PAM authentication via ChallengeResponseAuthentication may bypass
+# the setting of "PermitRootLogin without-password".
+# If you just want the PAM account and session checks to run without
+# PAM authentication, then enable this but set PasswordAuthentication
+# and ChallengeResponseAuthentication to 'no'.
+UsePAM yes
+
+# Expect .ssh/authorized_keys2 to be disregarded by default in future.
+#AuthorizedKeysFile	.ssh/authorized_keys .ssh/authorized_keys2
+#AuthorizedPrincipalsFile none
+#AuthorizedKeysCommand none
+#AuthorizedKeysCommandUser nobody
+
+X11Forwarding no
+X11UseLocalhost yes
+#X11DisplayOffset 10
+
+AllowTcpForwarding no
+TCPKeepAlive no
+
+AllowAgentForwarding no
+
+{% if ssh_disable_gateway_ports == true %}
+GatewayPorts no
+{% else %}
+GatewayPorts yes
+{% endif %}
+
+#PermitTTY yes
+PrintMotd no
+PrintLastLog yes
+
+#PermitUserEnvironment no
+Compression no
+
+#ClientAliveInterval 0
+#ClientAliveCountMax 3
+
+UseDNS yes
+
+#PidFile /var/run/sshd.pid
+#PermitTunnel no
+#ChrootDirectory none
+#VersionAddendum none
+#Banner none
+
+# Allow client to pass locale environment variables
+AcceptEnv LANG LC_*
+
+# override default of no subsystems
+Subsystem	sftp	/usr/lib/openssh/sftp-server
+
+# Example of overriding settings on a per-user basis
+#Match User anoncvs
+#	X11Forwarding no
+#	AllowTcpForwarding no
+#	PermitTTY no
+#	ForceCommand cvs server
