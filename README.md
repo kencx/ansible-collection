@@ -19,3 +19,11 @@ running systemd in Docker containers.
 
 Additionally, `apt update` is not working in Debian 10 container due to
 "oldstable".
+
+## Development
+When testing locally, the collection can be quickly installed to the
+collections' path with
+
+```bash
+$ ansible-galaxy install -f -r requirements.yml
+```
