@@ -1,0 +1,5 @@
+---
+binary_url: "https://github.com/junegunn/fzf/releases/download/0.29.0/fzf-0.29.0-linux_amd64.tar.gz"
+binary_dest: "{{ ansible_env.HOME }}/.local/bin"
+wildcard: ""
+opts: ""

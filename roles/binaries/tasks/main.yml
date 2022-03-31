@@ -1,0 +1,11 @@
+---
+- name: Install binary
+  unarchive:
+    src: "{{ binary_url }}"
+    dest: "{{ binary_dest }}"
+    remote_src: true
+    keep_newer: true
+    extra_opts:
+      - --wildcards
+      - "{{ wildcard | default('') }}"
+      - "{{ opts | default('') }}"
