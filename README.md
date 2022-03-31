@@ -1,5 +1,8 @@
 # Ansible Collection - kencx.ansible
 
+This collection contains roles and playbooks for bootstrapping my homelab and
+workstation.
+
 ## Roles
 - `security` provides basic hardening such as configuring `sudo`, SSH hardening,
   installing ufw and fail2ban
@@ -10,28 +13,43 @@ Bootstraps a brand new development workstation. Tested on Ubuntu 21.04.
 
 Refer to `playbooks` for more details.
 
-## Molecule
-To debug roles, run:
+## Development
+### Prerequisites
+- ansible[lint]
+- molecule[docker,vagrant]
+- Docker
+- Vagrant
+- make
+
+When testing locally, the collection can be quickly installed to the local
+collections path with
 
 ```bash
-$ molecule converge -s security
-$ molecule verify -s security
+$ make galaxy-install
 ```
+
+### Molecule
+To debug and test roles, run:
+
+```bash
+$ make converge scen=security
+$ make verify scen=security
+```
+
+## Issues
 
 When running roles with `service`, systemd is required. However,
 [there](https://github.com/geerlingguy/docker-ubuntu2004-ansible/issues/18) are
 [issues](https://github.com/ansible-community/molecule/discussions/3108) with
-running systemd in Docker containers.
+running systemd in Docker containers. As such, these roles require Vagrant and
+molecule-vagrant. Affected roles:
+- `security`
 
-Additionally, `apt update` is not working in Debian 10 container due to
+Additionally, `apt update` is not working well in Debian 10 container due to
 "oldstable".
 
-## Development
-When testing locally, the collection can be quickly installed to the
-collections' path with
-
-```bash
-$ ansible-galaxy install -f -r requirements.yml
-```
-
 ## TODO
+- [ ] `group_vars`
+- [ ] precommit
+- [ ] CI/CD
+- [ ] molecule scenario for `binaries`
