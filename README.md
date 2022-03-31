@@ -1,8 +1,14 @@
-# Ansible Collection - kencx.homelab
+# Ansible Collection - kencx.ansible
 
+## Roles
 - `security` provides basic hardening such as configuring `sudo`, SSH hardening,
   installing ufw and fail2ban
 - `terraform` installs Terraform CLI
+
+## Playbooks
+Bootstraps a brand new development workstation. Tested on Ubuntu 21.04.
+
+Refer to `playbooks` for more details.
 
 ## Molecule
 To debug roles, run:
@@ -27,3 +33,5 @@ collections' path with
 ```bash
 $ ansible-galaxy install -f -r requirements.yml
 ```
+
+## TODO

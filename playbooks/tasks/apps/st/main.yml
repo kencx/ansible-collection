@@ -1,0 +1,24 @@
+---
+- name: Check for existing st install
+  stat:
+    path: "{{ path_to_st }}"
+  ignore_errors: true
+  changed_when: false
+  failed_when: false
+  register: st_exists
+
+- name: Check latest st version
+  command: st -v
+  ignore_errors: true
+  changed_when: false
+  failed_when: false
+  register: st_version
+
+- name: Install st
+  include: install.yml
+  when: "not st_exists.stat.exists or \
+         st_target_version is not defined or \
+         st_target_version|string not in st_version.stderr"
+
+# - name: remove build directory and dependencies
+#   when: "{{ remove_build }}" == true

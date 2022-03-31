@@ -1,0 +1,10 @@
+---
+- name: Ensure ~/.local/share/applications exists
+  file:
+    path: "{{ home }}/.local/share/applications"
+    state: directory
+    mode: 0755
+
+- name: Add desktop files
+  shell: "mv {{ dotfiles_repo_path }}/etc/desktop/*.desktop \
+            {{ home }}/.local/share/applications/"

@@ -1,0 +1,67 @@
+home: "{{ ansible_env.HOME }}"
+
+base_apps:
+  - git
+  - vim
+  - stow
+  - openssh-server
+  - python3
+  - python3-pip
+  - python3-venv
+
+  - firefox
+  - telegram-desktop
+  - zathura
+
+  - x11-utils
+  - xdo
+  - xdotool
+  - xclip
+  - libnotify-bin
+  - bluez
+  - blueman
+  - network-manager
+  - pulseaudio
+  - pavucontrol
+
+dev_install: true
+dev_apps:
+  - build-essential
+  - shellcheck
+pipx_apps:
+  - jedi-language-server
+  - yamllint
+  - "ansible-lint[community,yamllint]"
+stylua_url: "https://github.com/JohnnyMorganz/StyLua/releases/\
+             download/v0.11.3/stylua-0.11.3-linux.zip"
+
+optional_install: false
+optional_apps:
+  - vlc
+  - vagrant
+
+ricing: true
+ricing_apps:
+  - bspwm
+  - sxhkd
+  - dunst
+  - rofi
+  - feh
+  - scrot
+
+# dotfiles
+dotfiles_repo_url: "https://github.com/kencx/dotfiles"
+dotfiles_repo_path: "{{ home }}/dotfiles"
+config_path: "{{ home }}/.config"
+
+# fonts
+font_repo_url: https://github.com/ryanoasis/nerd-fonts/releases/download
+font_version: v2.1.0
+font_name: FiraCode
+font_dir: "{{ ansible_env.HOME }}/.local/share/fonts"
+
+# startpage
+firefox_path: "{{ home }}/.mozilla"
+startpage_url: "https://github.com/kencx/startpage"
+startpage_dest: "{{ firefox_path }}/startpage"
+

@@ -1,0 +1,37 @@
+---
+- name: install build dependencies
+  become: true
+  package:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - pkg-config
+    - build-essential
+    - fontconfig
+    - libtool
+    - gtk-doc-tools
+    - gcc
+    - g++
+    - libfreetype6-dev
+    - libglib2.0-dev
+    - libcairo2-dev
+    - libx11-dev
+    - libxft-dev
+    - libxext-dev
+    - libharfbuzz-dev
+
+- name: clone st repo
+  git:
+    repo: "{{ st_repo_url }}"
+    dest: "{{ st_repo_path }}"
+    version: "HEAD"
+    clone: true
+    update: true
+
+- name: build and install
+  become: true
+  command: "{{ item }}"
+  args:
+    chdir: "{{ st_repo_path }}"
+  with_items:
+    - make install

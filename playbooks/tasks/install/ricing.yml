@@ -1,0 +1,13 @@
+---
+- name: Install ricing apps
+  become: true
+  package:
+    name: "{{ item }}"
+    state: present
+  with_items: "{{ ricing_apps }}"
+
+- name: Remove xfce4-notifyd
+  become: true
+  package:
+    name: xfce4-notifyd
+    state: absent

@@ -1,5 +1,5 @@
 namespace: kencx
-name: homelab
+name: ansible
 version: 0.0.1
 readme: README.md
 authors:
@@ -16,7 +16,7 @@ tags: []
 # range specifiers can be set and are separated by ','
 dependencies: {}
 
-repository: https://github.com/kencx/homelab-collection
+repository: https://github.com/kencx/ansible
 
 # documentation: http://docs.example.com
 # homepage: http://example.com

@@ -1,0 +1,49 @@
+---
+- hosts: all
+  vars_files:
+    - vars.yml
+  vars:
+    - user: "{{ ansible_user }}"
+      home: "{{ ansible_env.HOME }}"
+  pre_tasks:
+    - name: update packages
+      become: true
+      apt:
+        upgrade: false
+        update_cache: true
+        cache_valid_time: 86400
+
+  roles:
+    - role: roles/security
+    - role: geerlingguy.docker
+      vars:
+        docker_compose_version: v2.2.3
+        docker_users: ["{{ user }}"]
+    - role: gantsign.oh-my-zsh
+      users:
+        - username: "{{ user }}"
+
+  tasks:
+    - name: Install main apps
+      import_tasks: tasks/install/main.yml
+
+    - name: Install dev apps
+      import_tasks: tasks/install/dev.yml
+      when: dev_install == true
+
+    - name: Install optional apps
+      import_tasks: tasks/install/optional.yml
+      when: optional_install == true
+
+    - name: Install ricing apps
+      import_tasks: tasks/install/ricing.yml
+      when: ricing == true
+
+    - name: Apply ricing
+      import_tasks: tasks/ricing/main.yml
+      when: ricing == true
+
+  post_tasks:
+    - name: Reboot machine
+      become: true
+      reboot:
