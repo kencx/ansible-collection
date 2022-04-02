@@ -17,4 +17,3 @@
   register: fccache
   changed_when: false
   failed_when: "'fc-cache: succeeded' not in fccache.stdout"
-

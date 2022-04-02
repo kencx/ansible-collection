@@ -1,6 +1,6 @@
 scen ?= default
 
-.PHONY: $(mol) inventory run dry-run galaxy-install
+.PHONY: $(mol) galaxy-install pre-commit
 
 # molecule
 mol = create converge verify destroy test
@@ -21,3 +21,5 @@ $(mol):
 galaxy-install:
 	ansible-galaxy install -f -r requirements.yml
 
+pre-commit:
+	pre-commit run --all-files
