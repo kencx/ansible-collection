@@ -7,6 +7,7 @@ workstation.
 - `security` provides basic hardening such as configuring `sudo`, SSH hardening,
   installing ufw and fail2ban
 - `terraform` installs Terraform CLI
+- `python3` installs and updates Python3 and pip3
 
 ## Playbooks
 Bootstraps a brand new development workstation. Tested on Ubuntu 21.04.
