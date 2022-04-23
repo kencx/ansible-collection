@@ -3,7 +3,7 @@ scen ?= default
 .PHONY: $(mol) galaxy-install pre-commit list
 
 # molecule
-mol = create converge verify destroy test
+mol = create converge verify destroy test login prepare
 $(mol):
 	molecule $@ -s $(scen)
 

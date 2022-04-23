@@ -8,6 +8,7 @@ workstation.
   installing ufw and fail2ban
 - `terraform` installs Terraform CLI
 - `python3` installs and updates Python3 and pip3
+- `dotfiles` installs custom dotfiles for remote machines
 
 ## Playbooks
 Bootstraps a brand new development workstation. Tested on Ubuntu 21.04.
@@ -51,6 +52,5 @@ Additionally, `apt update` is not working well in Debian 10 container due to
 
 ## TODO
 - [ ] `group_vars`
-- [ ] precommit
-- [ ] CI/CD
+- [ ] versioning
 - [ ] molecule scenario for `binaries`

@@ -1,0 +1,32 @@
+---
+- name: Verify
+  hosts: all
+  gather_facts: false
+  tasks:
+    - name: Set facts
+      set_fact:
+        user_home: "root"
+
+    - name: .vimrc exists
+      stat:
+        path: "{{ user_home }}/.vimrc"
+      register: vimrc
+
+    - debug:
+        msg: ".vimrc exists"
+      when: vimrc.stat.exists
+
+    - name: Check gitconfig
+      shell: git config -l
+      register: gitconfig
+      failed_when: |
+        "user.name=username" not in gitconfig.stdout
+
+    - name: .bash_aliases exists
+      stat:
+        path: "{{ user_home }}/.bash_aliases"
+      register: bash_aliases
+
+    - debug:
+        msg: ".bash_aliases exists"
+      when: bash_aliases.stat.exists

@@ -1,0 +1,40 @@
+---
+- name: Get user
+  set_fact:
+    user: "{{ ansible_env.USER }}"
+    user_home: "{{ ansible_env.HOME }}"
+
+- name: Copy .gitconfig
+  template:
+    src: "../templates/.gitconfig.j2"
+    dest: "{{ user_home }}/.gitconfig"
+    owner: "{{ user }}"
+
+- name: Copy .vimrc file
+  copy:
+    src: "../files/.vimrc"
+    dest: "{{ user_home }}/.vimrc"
+    owner: "{{ user }}"
+    group: "{{ user }}"
+    mode: "0644"
+
+- name: Install vim gruvbox theme
+  git:
+    repo: "{{ vim_theme_repo }}"
+    dest: "{{ vim_theme_dest }}"
+
+- name: Add alias definitions to .bashrc
+  blockinfile:
+    path: "{{ user_home }}/.bashrc"
+    block: |
+      if [ -f ~/.bash_aliases ]; then
+          . ~/.bash_aliases
+      fi
+
+- name: Copy .bash_aliases file
+  copy:
+    src: "../files/.bash_aliases"
+    dest: "{{ user_home }}/.bash_aliases"
+    owner: "{{ user }}"
+    group: "{{ user }}"
+    mode: "0644"
