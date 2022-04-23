@@ -1,6 +1,6 @@
 namespace: kencx
 name: ansible
-version: 0.0.1
+version: 0.1.0
 readme: README.md
 authors:
 - kencx <ken@cheo.dev>
