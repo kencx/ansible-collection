@@ -1,6 +1,6 @@
 scen ?= default
 
-.PHONY: $(mol) galaxy-install pre-commit list
+.PHONY: $(mol) galaxy-install pre-commit list tag
 
 # molecule
 mol = create converge verify destroy test login prepare
@@ -10,19 +10,13 @@ $(mol):
 list:
 	molecule list
 
-# playbook
-# inventory:
-# 	ansible-inventory --graph -i $(inv)
-#
-# run:
-# 	ansible-playbook "$(playbook).yml" -K
-#
-# dry-run:
-# 	ansible-playbook --check "$(playbook).yml" -K
-
-# galaxy
 galaxy-install:
 	ansible-galaxy install -f -r requirements.yml
 
 pre-commit:
 	pre-commit run --all-files
+
+tag:
+	$(eval VER=$(shell ./bin/inc_version galaxy.yml $(c)))
+	git add galaxy.yml && git commit -m "chore: update to version $(VER)"
+	git tag -a $(VER)
