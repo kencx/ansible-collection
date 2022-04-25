@@ -2,22 +2,23 @@
 - name: Verify
   hosts: all
   gather_facts: false
+  vars:
+    user: "debian"
+    user_home: "/home/{{ user }}"
   tasks:
-    - name: Set facts
-      set_fact:
-        user_home: "root"
-
     - name: .vimrc exists
       stat:
         path: "{{ user_home }}/.vimrc"
       register: vimrc
 
     - debug:
-        msg: ".vimrc exists"
+        msg: "{{ user_home }}/.vimrc exists"
       when: vimrc.stat.exists
 
     - name: Check gitconfig
-      shell: git config -l
+      become: true
+      become_user: "{{ user }}"
+      command: git config -l
       register: gitconfig
       failed_when: |
         "user.name=username" not in gitconfig.stdout

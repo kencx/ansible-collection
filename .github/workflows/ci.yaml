@@ -40,3 +40,8 @@ jobs:
         run: molecule test -s python3
         env:
           ANSIBLE_FORCE_COLOR: "1"
+
+      - name: Test dotfiles
+        run: molecule test -s dotfiles
+        env:
+          ANSIBLE_FORCE_COLOR: "1"

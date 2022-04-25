@@ -14,3 +14,9 @@
       with_items:
         - git
         - vim
+    - name: Create user debian
+      user:
+        name: debian
+        shell: /bin/bash
+        create_home: true
+        state: present

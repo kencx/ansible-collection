@@ -4,6 +4,7 @@
     src: "../templates/.gitconfig.j2"
     dest: "{{ user_home }}/.gitconfig"
     owner: "{{ user }}"
+    group: "{{ user }}"
 
 - name: Copy .vimrc file
   copy:
@@ -14,6 +15,8 @@
     mode: "0644"
 
 - name: Install vim gruvbox theme
+  become: true
+  become_user: "{{ user }}"
   git:
     repo: "{{ vim_theme_repo }}"
     dest: "{{ vim_theme_dest }}"
