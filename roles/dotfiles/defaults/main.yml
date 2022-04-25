@@ -1,3 +1,6 @@
+user: "debian"
+user_home: "/home/{{ user }}"
+
 git_user: "username"
 git_email: "user@example.com"
 

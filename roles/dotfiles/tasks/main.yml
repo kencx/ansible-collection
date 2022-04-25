@@ -1,9 +1,4 @@
 ---
-- name: Get user
-  set_fact:
-    user: "{{ ansible_env.USER }}"
-    user_home: "{{ ansible_env.HOME }}"
-
 - name: Copy .gitconfig
   template:
     src: "../templates/.gitconfig.j2"
