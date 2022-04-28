@@ -1,0 +1,24 @@
+---
+- name: Install pip3
+  apt:
+    name: python3-pip
+    state: present
+
+- name: Install pipx
+  pip:
+    name: pipx
+
+  # install on user
+- name: Install Ansible with pipx
+  become_user: "{{ user }}"
+  community.general.pipx:
+    name: ansible
+    install_deps: true
+    state: present
+
+- name: Inject ansible-lint with pipx
+  become_user: "{{ user }}"
+  community.general.pipx:
+    name: ansible
+    inject_packages: ansible-lint
+    state: inject
