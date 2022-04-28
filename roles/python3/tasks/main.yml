@@ -30,9 +30,5 @@
 - name: Install pipx
   pip:
     name: pipx
-  register: pipx_install
-  when: install_pipx == true
-
-- name: Pipx ensurepath
-  command: "pipx ensurepath"
-  when: pipx_install.changed
+  when: install_pipx
+  notify: ensurepath
