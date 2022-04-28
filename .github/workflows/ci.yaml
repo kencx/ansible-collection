@@ -31,10 +31,25 @@ jobs:
       - name: Install test dependencies
         run: pip3 install ansible molecule[docker] docker
 
-      - name: Count number of molecule scenarios
-        run: echo "NUM_OF_SCENARIOS=$(ls -d molecule/* | wc -l)" >> $GITHUB_ENV
-
-      - name: Run all tests in parallel
-        run: "make molecule/* -j${{ env.NUM_OF_SCENARIOS }} -O"
+      - name: Test dotfiles
+        run: molecule test -s dotfiles
         env:
           ANSIBLE_FORCE_COLOR: "1"
+
+      - name: Test terraform
+        run: molecule test -s terraform
+        env:
+          ANSIBLE_FORCE_COLOR: "1"
+
+      - name: Test python3
+        run: molecule test -s python3
+        env:
+          ANSIBLE_FORCE_COLOR: "1"
+
+      # - name: Count number of molecule scenarios
+      #   run: echo "NUM_OF_SCENARIOS=$(ls -d molecule/* | wc -l)" >> $GITHUB_ENV
+
+      # - name: Run all tests in parallel
+      #   run: "make molecule/* -j${{ env.NUM_OF_SCENARIOS }} -O"
+      #   env:
+      #     ANSIBLE_FORCE_COLOR: "1"
