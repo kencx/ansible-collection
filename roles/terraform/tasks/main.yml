@@ -16,7 +16,7 @@
     installed_terraform_version: "{{ terraform_version.stdout | regex_search('(\\d+).(\\d+).(\\d+)') }}"
   when: terraform_version.stdout != ""
 
-- name: Install unzip
+- name: Install unzip (required to unzip terraform binary)
   apt:
     name: unzip
     state: present

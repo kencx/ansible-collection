@@ -1,8 +1,9 @@
 ---
-# defaults file for nfs
-nfs_server_ip: "10.10.10.102"
-nfs_server_src_dir: "/home/debian/apps/dev-apps"
-nfs_share_path: "{{ nfs_server_ip }}:{{ nfs_server_src_dir }}"
-nfs_mnt_path: "/mnt/docker"
-
 nfs_opts: "rw,sync,hard,intr,bg,nofail"
+nfs_share_mounts: []
+
+# eg.
+# nfs_share_mounts:
+#   - src: "10.10.10.1:/mnt/example"
+#   - path: "/mnt/example"
+#   - state: mounted

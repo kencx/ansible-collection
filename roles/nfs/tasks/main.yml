@@ -8,8 +8,9 @@
 - name: Mount NFS share
   become: true
   mount:
-    src: "{{ nfs_share_path }}"
-    path: "{{ nfs_mnt_path }}"
     fstype: nfs
-    opts: "{{ nfs_opts }}"
-    state: mounted
+    src: "{{ item.src }}"
+    path: "{{ item.path }}"
+    opts: "{{ item.opts | default(nfs_opts) }}"
+    state: "{{ item.state | default('mounted') }}"
+  with_items: "{{ nfs_share_mounts }}"
