@@ -1,0 +1,46 @@
+---
+- name: Install Goss binary
+  become: true
+  get_url:
+    url: "{{ goss_binary_url }}"
+    dest: "{{ goss_binary_path }}"
+    mode: "0755"
+
+- name: Copy Goss directory
+  become: true
+  copy:
+    src: "{{ goss_dir }}"
+    dest: "{{ goss_parent_dir }}"
+    mode: "0755"
+
+- name: Goss directory path
+  set_fact:
+    goss_remote_dir: "{{ goss_parent_dir }}/{{ goss_dir | basename }}"
+
+- name: Goss file path
+  set_fact:
+    full_goss_filepath: "{{ goss_remote_dir }}/{{ goss_file }}"
+
+- name: Count number of files
+  shell: "ls {{ goss_remote_dir }} | wc -l"
+  changed_when: false
+  register: num_of_files
+
+- name: "Goss Validate"
+  become: true
+  command: "goss -g {{ full_goss_filepath }} validate"
+  changed_when: false
+  when: num_of_files.stdout | int <= 1
+
+- name: Goss Validate (rendered)
+  become: true
+  shell: "goss -g {{ full_goss_filepath }} render | goss -g - validate"
+  changed_when: false
+  when: num_of_files.stdout | int > 1
+
+- name: Remove Goss binary
+  become: true
+  file:
+    path: "{{ goss_binary_path }}"
+    state: absent
+  when: remove_goss_binary|bool
