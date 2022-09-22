@@ -46,6 +46,11 @@ jobs:
         env:
           ANSIBLE_FORCE_COLOR: "1"
 
+      - name: Test goss
+        run: molecule test -s goss
+        env:
+          ANSIBLE_FORCE_COLOR: "1"
+
       # - name: Count number of molecule scenarios
       #   run: echo "NUM_OF_SCENARIOS=$(ls -d molecule/* | wc -l)" >> $GITHUB_ENV
 

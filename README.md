@@ -9,6 +9,7 @@ workstation.
 - `terraform` installs Terraform CLI
 - `python3` installs and updates Python3 and pip3
 - `dotfiles` installs custom dotfiles for remote machines
+- `goss` installs and runs [Goss](https://github.com/aelsabbahy/goss) server validation
 
 ## Playbooks
 Bootstraps a brand new development workstation. Tested on Ubuntu 21.04.
