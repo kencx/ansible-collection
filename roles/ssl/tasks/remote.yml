@@ -1,0 +1,65 @@
+---
+- name: Create local certs directory
+  file:
+    path: "{{ ssl_cert_dir }}"
+    mode: 0755
+    state: directory
+  delegate_to: localhost
+
+- name: Create remote TLS directory
+  file:
+    path: "{{ ssl_remote_tls_dir }}"
+    mode: 0755
+    owner: "{{ ssl_remote_user }}"
+    group: "{{ ssl_remote_user }}"
+    state: directory
+
+- name: Generate remote host private key
+  community.crypto.openssl_privatekey:
+    path: "{{ ssl_remote_tls_dir }}/key.pem"
+    mode: 0400
+    owner: "{{ ssl_remote_user }}"
+    group: "{{ ssl_remote_user }}"
+
+- name: Generate remote host CSR
+  community.crypto.openssl_csr:
+    path: "{{ ssl_remote_tls_dir }}/host.csr"
+    privatekey_path: "{{ ssl_remote_tls_dir }}/key.pem"
+    basic_constraints:
+      - "CA:FALSE"
+    basic_constraints_critical: true
+    common_name: "{{ ssl_remote_cert_common_name }}"
+    subject_alt_name:
+      - "DNS:{{ ansible_host }}"
+      - "DNS:{{ ansible_fqdn }}"
+      - "IP:127.0.0.1"
+      - "{{ ssl_remote_cert_subject_alt_name }}"
+    mode: 0640
+    owner: "{{ ssl_remote_user }}"
+    group: "{{ ssl_remote_user }}"
+
+- name: Fetch CSR from remote to localhost
+  fetch:
+    src: "{{ ssl_remote_tls_dir }}/host.csr"
+    dest: "{{ ssl_cert_dir }}/host.csr"
+    flat: true
+
+- name: Get owner UID of CSR
+  stat:
+    path: "{{ ssl_cert_dir }}/host.csr"
+  register: st
+  delegate_to: localhost
+
+- name: Sign remote certificate with root CA
+  become: true
+  community.crypto.x509_certificate:
+    path: "{{ ssl_cert_dir }}/cert.crt"
+    csr_path: "{{ ssl_cert_dir }}/host.csr"
+    provider: ownca
+    ownca_path: "{{ ssl_intermediate_ca_dir }}/{{ ssl_intermediate_ca_cert }}"
+    ownca_privatekey_path: "{{ ssl_intermediate_ca_dir }}/{{ ssl_intermediate_ca_key }}"
+    ownca_not_after: "{{ ssl_remote_cert_ttl }}"
+    owner: "{{ st.stat.uid }}"
+    group: "{{ st.stat.gid }}"
+    mode: 0640
+  delegate_to: localhost

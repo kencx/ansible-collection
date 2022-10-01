@@ -5,6 +5,10 @@
     url: "{{ goss_binary_url }}"
     dest: "{{ goss_binary_path }}"
     mode: "0755"
+  retries: 3
+  delay: 5
+  register: result
+  until: result.rc == 0
 
 - name: Copy Goss directory
   become: true

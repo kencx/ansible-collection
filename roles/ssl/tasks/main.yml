@@ -1,0 +1,61 @@
+---
+- name: Create root CA on localhost
+  become: true
+  become_user: root
+  import_tasks: root.yml
+  delegate_to: localhost
+  run_once: true
+  when: ssl_create_root_ca|bool
+
+  # Also creates ca-chain file
+- name: Create intermediate CA on localhost
+  become: true
+  become_user: root
+  import_tasks: intermediate.yml
+  delegate_to: localhost
+  run_once: true
+  when: ssl_create_intermediate_ca|bool
+
+- name: Create and sign remote host certificate
+  import_tasks: remote.yml
+
+- name: Create remote trust store directory
+  become: true
+  file:
+    path: "{{ ssl_remote_ca_trust_store_dir }}"
+    mode: 0755
+    owner: root
+    group: root
+    state: directory
+
+- name: Copy signed certificate and certificate-chain to remote host
+  become: true
+  copy:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    mode: "{{ item.mode }}"
+    owner: "{{ item.owner }}"
+    group: "{{ item.group }}"
+  with_items:
+    - src: "{{ ssl_cert_dir }}/cert.crt"
+      dest: "{{ ssl_remote_tls_dir }}/{{ ssl_remote_cert_name }}.crt"
+      mode: "0640"
+      owner: "{{ ssl_remote_user }}"
+      group: "{{ ssl_remote_user }}"
+    - src: "{{ ssl_ca_chain_file }}"
+      dest: "{{ ssl_remote_ca_trust_store_dir }}/ca-chain.crt"
+      mode: "0640"
+      owner: "root"
+      group: "root"
+
+- name: Add certificate-chain to remote ca-certificates.conf
+  become: true
+  lineinfile:
+    path: "/etc/ca-certificates.conf"
+    line: "{{ ssl_remote_ca_trust_store_dir | basename }}/ca-chain.crt"
+
+- name: Update remote trust store
+  become: true
+  command: update-ca-certificates
+  register: update_cert_output
+  changed_when: '"1 added" in update_cert_output.stdout'

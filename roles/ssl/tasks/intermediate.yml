@@ -1,0 +1,62 @@
+---
+- name: Create intermediate CA directory
+  file:
+    path: "{{ ssl_intermediate_ca_dir }}"
+    mode: 0755
+    owner: root
+    group: root
+    state: directory
+
+- name: Generate intermediate key
+  community.crypto.openssl_privatekey:
+    path: "{{ ssl_intermediate_ca_dir }}/{{ ssl_intermediate_ca_key }}"
+    mode: 0400
+    owner: root
+    group: root
+
+- name: Create intermediate CSR
+  community.crypto.openssl_csr:
+    path: "{{ ssl_intermediate_ca_dir }}/intermediate.csr"
+    privatekey_path: "{{ ssl_intermediate_ca_dir }}/{{ ssl_intermediate_ca_key }}"
+    common_name: "Intermediate CA"
+    use_common_name_for_san: false
+    basic_constraints:
+      - "CA:TRUE"
+    basic_constraints_critical: true
+    key_usage:
+      - keyCertSign
+    key_usage_critical: true
+    mode: 0640
+    owner: root
+    group: root
+
+- name: Generate intermediate CA certificate
+  community.crypto.x509_certificate:
+    path: "{{ ssl_intermediate_ca_dir }}/{{ ssl_intermediate_ca_cert }}"
+    csr_path: "{{ ssl_intermediate_ca_dir }}/intermediate.csr"
+    provider: ownca
+    ownca_privatekey_path: "{{ ssl_root_ca_dir }}/{{ ssl_root_ca_key }}"
+    ownca_path: "{{ ssl_root_ca_dir }}/{{ ssl_root_ca_cert }}"
+    mode: 0640
+    owner: root
+    group: root
+    return_content: true
+  register: intermediate_cert
+
+- name: Create certificate chain
+  community.crypto.certificate_complete_chain:
+    input_chain: "{{ intermediate_cert.certificate }}"
+    root_certificates:
+      - "{{ ssl_root_ca_dir }}/{{ ssl_root_ca_cert }}"
+  register: certificate_chain
+
+- name: Write certificate chain to localhost
+  copy:
+    content: "{{ ''.join(certificate_chain.complete_chain) }}"
+    dest: "{{ ssl_intermediate_ca_dir }}/ca-chain.crt"
+    mode: 0644
+    owner: root
+    group: root
+  with_items:
+    - "{{ ssl_intermediate_ca_dir }}/ca-chain.crt"
+    - "{{ ssl_ca_chain_file }}"

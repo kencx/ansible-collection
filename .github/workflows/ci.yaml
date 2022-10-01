@@ -36,10 +36,10 @@ jobs:
         env:
           ANSIBLE_FORCE_COLOR: "1"
 
-      - name: Test terraform
-        run: molecule test -s terraform
-        env:
-          ANSIBLE_FORCE_COLOR: "1"
+      # - name: Test terraform
+      #   run: molecule test -s terraform
+      #   env:
+      #     ANSIBLE_FORCE_COLOR: "1"
 
       - name: Test python3
         run: molecule test -s python3

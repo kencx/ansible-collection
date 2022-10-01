@@ -1,0 +1,42 @@
+---
+# https://docs.ansible.com/ansible/latest/collections/community/crypto/docsite/guide_ownca.html
+- name: Create root CA directory
+  file:
+    path: "{{ ssl_root_ca_dir }}"
+    mode: 0755
+    owner: root
+    group: root
+    state: directory
+
+- name: Generate root key
+  community.crypto.openssl_privatekey:
+    path: "{{ ssl_root_ca_dir }}/{{ ssl_root_ca_key }}"
+    mode: 0400
+    owner: root
+    group: root
+
+- name: Create root CSR
+  community.crypto.openssl_csr:
+    path: "{{ ssl_root_ca_dir }}/ca.csr"
+    privatekey_path: "{{ ssl_root_ca_dir }}/{{ ssl_root_ca_key }}"
+    common_name: "Root CA"
+    use_common_name_for_san: false
+    basic_constraints:
+      - "CA:TRUE"
+    basic_constraints_critical: true
+    key_usage:
+      - keyCertSign
+    key_usage_critical: true
+    mode: 0640
+    owner: root
+    group: root
+
+- name: Generate root CA certificate
+  community.crypto.x509_certificate:
+    path: "{{ ssl_root_ca_dir }}/{{ ssl_root_ca_cert }}"
+    provider: selfsigned
+    privatekey_path: "{{ ssl_root_ca_dir }}/{{ ssl_root_ca_key }}"
+    csr_path: "{{ ssl_root_ca_dir }}/ca.csr"
+    mode: 0644
+    owner: root
+    group: root

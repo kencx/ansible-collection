@@ -1,0 +1,30 @@
+---
+ssl_ca_dir: "/root"
+
+# root
+# If false, you must provide a valid root key pair in ssl_root_ca_dir
+ssl_create_root_ca: true
+ssl_root_ca_dir: "{{ ssl_ca_dir }}/ownca/root"
+ssl_root_ca_key: "ca_key.pem"
+ssl_root_ca_cert: "ca.crt"
+
+# intermediate
+ssl_create_intermediate_ca: true
+ssl_intermediate_ca_dir: "{{ ssl_ca_dir }}/ownca/intermediate"
+ssl_intermediate_ca_key: "intermediate_key.pem"
+ssl_intermediate_ca_cert: "intermediate.crt"
+
+# cert dir
+ssl_cert_dir: "/tmp/certs"
+ssl_ca_chain_file: "{{ ssl_cert_dir }}/ca-chain.crt"
+
+# remote host
+ssl_remote_user: "debian"
+ssl_remote_tls_dir: "/home/{{ ssl_remote_user }}/tls"
+ssl_remote_ca_trust_store_dir: "/usr/share/ca-certificates/ownca"
+
+# cert details
+ssl_remote_cert_name: "{{ ssl_remote_user }}"
+ssl_remote_cert_common_name: "example.com"
+ssl_remote_cert_subject_alt_name: "DNS:example.com"
+ssl_remote_cert_ttl: "+365d"
