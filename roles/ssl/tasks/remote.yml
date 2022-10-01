@@ -1,5 +1,6 @@
 ---
 - name: Create local certs directory
+  become: false
   file:
     path: "{{ ssl_cert_dir }}"
     mode: 0755

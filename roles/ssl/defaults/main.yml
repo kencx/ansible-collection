@@ -16,7 +16,9 @@ ssl_intermediate_ca_cert: "intermediate.crt"
 
 # cert dir
 ssl_cert_dir: "/tmp/certs"
-ssl_ca_chain_file: "{{ ssl_cert_dir }}/ca-chain.crt"
+ssl_create_cert_chain: true
+ssl_ca_chain_name: ca-chain
+ssl_ca_chain_path: "{{ ssl_cert_dir }}/{{ ssl_ca_chain_name }}.crt"
 
 # remote host
 ssl_remote_user: "debian"

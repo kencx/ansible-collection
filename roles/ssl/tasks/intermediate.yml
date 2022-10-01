@@ -42,21 +42,3 @@
     group: root
     return_content: true
   register: intermediate_cert
-
-- name: Create certificate chain
-  community.crypto.certificate_complete_chain:
-    input_chain: "{{ intermediate_cert.certificate }}"
-    root_certificates:
-      - "{{ ssl_root_ca_dir }}/{{ ssl_root_ca_cert }}"
-  register: certificate_chain
-
-- name: Write certificate chain to localhost
-  copy:
-    content: "{{ ''.join(certificate_chain.complete_chain) }}"
-    dest: "{{ ssl_intermediate_ca_dir }}/ca-chain.crt"
-    mode: 0644
-    owner: root
-    group: root
-  with_items:
-    - "{{ ssl_intermediate_ca_dir }}/ca-chain.crt"
-    - "{{ ssl_ca_chain_file }}"

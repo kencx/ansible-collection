@@ -19,13 +19,21 @@
 - name: Create and sign remote host certificate
   import_tasks: remote.yml
 
+- name: Create certificate chain on localhost
+  import_tasks: chain.yml
+  delegate_to: localhost
+  run_once: true
+  when:
+    - ssl_create_intermediate_ca|bool
+    - ssl_create_cert_chain|bool
+
 - name: Create remote trust store directory
   become: true
   file:
     path: "{{ ssl_remote_ca_trust_store_dir }}"
     mode: 0755
-    owner: root
-    group: root
+    owner: "{{ ssl_remote_user }}"
+    group: "{{ ssl_remote_user }}"
     state: directory
 
 - name: Copy signed certificate and certificate-chain to remote host
@@ -42,11 +50,11 @@
       mode: "0640"
       owner: "{{ ssl_remote_user }}"
       group: "{{ ssl_remote_user }}"
-    - src: "{{ ssl_ca_chain_file }}"
-      dest: "{{ ssl_remote_ca_trust_store_dir }}/ca-chain.crt"
+    - src: "{{ ssl_ca_chain_path }}"
+      dest: "{{ ssl_remote_ca_trust_store_dir }}/{{ ssl_ca_chain_name }}.crt"
       mode: "0640"
-      owner: "root"
-      group: "root"
+      owner: "{{ ssl_remote_user }}"
+      group: "{{ ssl_remote_user }}"
 
 - name: Add certificate-chain to remote ca-certificates.conf
   become: true

@@ -1,0 +1,24 @@
+---
+- name: Create certificate chain
+  become: true
+  become_user: root
+  community.crypto.certificate_complete_chain:
+    input_chain: "{{ intermediate_cert.certificate }}"
+    root_certificates:
+      - "{{ ssl_root_ca_dir }}/{{ ssl_root_ca_cert }}"
+  register: certificate_chain
+  when: intermediate_cert is defined
+
+- name: Write certificate chain to localhost
+  become: true
+  become_user: root
+  copy:
+    content: "{{ ''.join(certificate_chain.complete_chain) }}"
+    dest: "{{ item }}"
+    mode: 0644
+    owner: root
+    group: root
+  with_items:
+    - "{{ ssl_intermediate_ca_dir }}/ca-chain.crt"
+    - "{{ ssl_ca_chain_path }}"
+  when: certificate_chain is defined
