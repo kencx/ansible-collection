@@ -60,7 +60,7 @@
   become: true
   lineinfile:
     path: "/etc/ca-certificates.conf"
-    line: "{{ ssl_remote_ca_trust_store_dir | basename }}/ca-chain.crt"
+    line: "{{ ssl_remote_ca_trust_store_dir | basename }}/{{ ssl_ca_chain_name }}.crt"
 
 - name: Update remote trust store
   become: true
