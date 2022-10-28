@@ -64,6 +64,7 @@ Basic security hardening on Linux systems including:
 | ssh_max_sessions | Set max number of sessions for SSH | `3` |
 | ssh_max_startups | Set max number of startups for SSH | `3` |
 | sudoers | List of groups to add sudo privileges | `[sudo]` |
+| ufw_rules | List of ufw rules to add. Requires port, proto and rule | `[]` |
 | fail2ban_config_file | Config file for fail2ban | `jail.local.j2` |
 | skip_handlers | Skip restarting services | `false` |
 

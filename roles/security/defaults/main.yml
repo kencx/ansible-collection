@@ -12,6 +12,11 @@ ssh_max_startups: 3
 # groups with sudo privileges - sudo, wheel etc.
 sudoers: [sudo]
 
+# ufw
+ufw_default_rules:
+  - {rule: 'allow', port: '{{ ssh_port }}', proto: 'tcp'}
+ufw_rules: []
+
 # fail2ban
 fail2ban_config_file: "jail.local.j2"
 
