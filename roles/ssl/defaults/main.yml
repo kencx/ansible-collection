@@ -2,7 +2,6 @@
 ssl_ca_dir: "/root"
 
 # root
-# If false, you must provide a valid root key pair in ssl_root_ca_dir
 ssl_create_root_ca: true
 ssl_root_ca_dir: "{{ ssl_ca_dir }}/ownca/root"
 ssl_root_ca_key: "ca_key.pem"
@@ -28,5 +27,10 @@ ssl_remote_ca_trust_store_dir: "/usr/share/ca-certificates/ownca"
 # cert details
 ssl_remote_cert_name: "{{ ssl_remote_user }}"
 ssl_remote_cert_common_name: "example.com"
-ssl_remote_cert_subject_alt_name: "DNS:example.com"
+ssl_remote_cert_default_san:
+  - "IP:{{ ansible_host }}"
+  - "DNS:{{ ansible_fqdn }}"
+  - "IP:127.0.0.1"
+ssl_remote_cert_san:
+  - "DNS:example.com"
 ssl_remote_cert_ttl: "+365d"

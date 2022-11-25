@@ -30,11 +30,7 @@
       - "CA:FALSE"
     basic_constraints_critical: true
     common_name: "{{ ssl_remote_cert_common_name }}"
-    subject_alt_name:
-      - "DNS:{{ ansible_host }}"
-      - "DNS:{{ ansible_fqdn }}"
-      - "IP:127.0.0.1"
-      - "{{ ssl_remote_cert_subject_alt_name }}"
+    subject_alt_name: "{{ ssl_remote_cert_default_san + ssl_remote_cert_san }}"
     mode: 0640
     owner: "{{ ssl_remote_user }}"
     group: "{{ ssl_remote_user }}"
