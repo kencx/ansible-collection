@@ -1,5 +1,0 @@
----
-st_repo_url: "https://github.com/kencx/st.git"
-st_repo_path: "{{ ansible_env.HOME }}/st"
-path_to_st: "/usr/local/bin/st"
-st_target_version: 0.8.4

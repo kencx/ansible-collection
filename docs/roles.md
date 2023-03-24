@@ -98,20 +98,22 @@ and the remote trust store is updated.
 | ssl_remote_ca_trust_store_dir | CA trust store directory | `/usr/share/ca-certificates/ownca` |
 | ssl_remote_cert_name | Name of signed certificate | `{{ ssl_remote_user }}` |
 | ssl_remote_cert_common_name | Common name of signed cert | `example.com` |
-| ssl_remote_cert_subject_alt_name | SAN of signed cert | `DNS:example.com` |
+| ssl_remote_cert_default_san | Default SAN(s) of signed cert | `[DNS:{{ ansible_host }}, DNS:{{ ansible_fqdn }}, IP:127.0.0.1]` |
+| ssl_remote_cert_san | SAN(s) of signed cert | `[DNS:example.com]` |
 | ssl_remote_cert_ttl | TTL of signed cert | `+365d` |
 
 #### Notes
 
 - When creating a new root or intermediate CA, local root permissions are required.
+- If `ssl_create_root_ca` or `ssl_create_intermediate_ca` is false, you must provide a
+  valid root/intermediate key pair in `ssl_root_ca_dir` or `ssl_intermediate_ca_dir`
+  respectively.
 - When providing your own intermediate CA for signing, ensure it is readable by the
-	local Ansible user. You might be required to use `-K` and pass sudo password if necessary.
-- `ssl_create_cert_chain` is only applicable when `ssl_create_intermediate_ca` is true.
-- When providing your own CA chain file, ensure it is world-readable or at least
-	readable by your local Ansible user.
-- `ssl_ca_chain_path` is the local filepath to the cert chain. To define the remote
-	filepath to the cert chain, it will be `{{ ssl_remote_ca_trust_store_dir }}/{{
-	ssl_ca_chain_name }}.crt`.
+  local Ansible user. You might be required to use `-K` and pass sudo password if
+  necessary.
+- If `ssl_create_cert_chain: false`, you **must** provide your own CA chain file. It can
+  be referenced with `ssl_ca_chain_name` and `ssl_ca_chain_path`. Ensure it is
+  world-readable or at least readable by your local Ansible user.
 - This role only supports updating of certificate trust store on Ubuntu/Debian systems.
 
 ## Terraform
