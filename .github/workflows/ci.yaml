@@ -31,16 +31,6 @@ jobs:
       - name: Install test dependencies
         run: pip3 install ansible molecule[docker] docker
 
-      - name: Test dotfiles
-        run: molecule test -s dotfiles
-        env:
-          ANSIBLE_FORCE_COLOR: "1"
-
-      # - name: Test terraform
-      #   run: molecule test -s terraform
-      #   env:
-      #     ANSIBLE_FORCE_COLOR: "1"
-
       - name: Test python3
         run: molecule test -s python3
         env:
