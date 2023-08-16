@@ -1,0 +1,31 @@
+---
+- name: Lookup latest version of goss
+  set_fact:
+    goss_version: "{{ (lookup('url', 'https://api.github.com/repos/goss-org/goss/releases/latest', split_lines=False) | from_json).get('tag_name') | replace('v', '') }}"
+  when: "goss_version == 'latest'"
+
+- name: Check goss releases
+  uri:
+    url: https://api.github.com/repos/goss-org/goss/releases/tags/{{ goss_version }}
+    return_content: true
+  register: goss_release
+
+- name: Get checksum
+  set_fact:
+    goss_checksum: "{{ lookup('url', item.browser_download_url).split(' ') | first }}"
+  run_once: true
+  loop: "{{ goss_release.json.assets }}"
+  when: "goss_tar ~ '.sha256' in item.name"
+  no_log: true
+
+- name: Download goss
+  get_url:
+    url: "{{ item.browser_download_url }}"
+    dest: "/usr/local/bin/goss"
+    checksum: "sha256:{{ goss_checksum }}"
+    owner: root
+    group: root
+    mode: 0755
+  loop: "{{ goss_release.json.assets }}"
+  when: "goss_tar in item.name"
+  no_log: true

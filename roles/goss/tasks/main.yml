@@ -1,14 +1,5 @@
 ---
-- name: Install Goss binary
-  become: true
-  get_url:
-    url: "{{ goss_binary_url }}"
-    dest: "{{ goss_binary_path }}"
-    mode: "0755"
-  retries: 3
-  delay: 5
-  register: result
-  until: not result.failed
+- import_tasks: install.yml
 
 - name: Copy Goss directory
   become: true
