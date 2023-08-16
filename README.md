@@ -9,16 +9,9 @@ documentation.
 
 - `security` provides basic hardening such as configuring `sudo`, SSH hardening,
   installing ufw and fail2ban
-- `terraform` installs Terraform CLI
 - `python3` installs and updates Python3 and pip3
-- `dotfiles` installs custom dotfiles for remote machines
 - `goss` installs and runs [Goss](https://github.com/aelsabbahy/goss) server validation
 - `ssl` generates TLS certificates from root and intermediate CAs
-
-## Playbooks
-Bootstraps a brand new development workstation. Tested on Ubuntu 21.04.
-
-Refer to `playbooks` for more details.
 
 ## Development
 ### Prerequisites
@@ -54,8 +47,3 @@ molecule-vagrant. Affected roles:
 
 Additionally, `apt update` is not working well in Debian 10 container due to
 "oldstable".
-
-## TODO
-- [ ] `group_vars`
-- [ ] versioning
-- [ ] molecule scenario for `binaries`
