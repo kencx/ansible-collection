@@ -1,8 +1,0 @@
-user: "debian"
-user_home: "/home/{{ user }}"
-
-git_user: "username"
-git_email: "user@example.com"
-
-vim_theme_repo: "https://github.com/morhetz/gruvbox.git"
-vim_theme_dest: "{{ user_home }}/.vim/pack/default/start/gruvbox"

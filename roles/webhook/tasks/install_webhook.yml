@@ -1,0 +1,27 @@
+---
+- name: Lookup latest version of webhook
+  set_fact:
+    webhook_version: "{{ (lookup('url', 'https://api.github.com/repos/adnanh/webhook/releases/latest', split_lines=False) | from_json).get('tag_name') | replace('v', '') }}"
+  when: "webhook_version == 'latest'"
+
+- name: Check webhook releases
+  uri:
+    url: https://api.github.com/repos/adnanh/webhook/releases/tags/{{ webhook_version }}
+    return_content: true
+  register: webhook_release
+
+- name: "Install webhook {{ webhook_release.json.tag_name }}"
+  unarchive:
+    src: "{{ item.browser_download_url }}"
+    dest: /usr/local/bin
+    remote_src: true
+    include: webhook
+    creates: /usr/local/bin/webhook
+    keep_newer: true
+    extra_opts:
+      - --no-anchored
+    owner: root
+    group: root
+    mode: 0755
+  loop: "{{ webhook_release.json.assets }}"
+  when: "'linux-amd64.tar.gz' in item.name"
