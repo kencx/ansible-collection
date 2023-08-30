@@ -1,5 +1,5 @@
 namespace: kencx
-name: ansible
+name: ansible-collection
 version: 0.1.0
 readme: README.md
 authors:
@@ -16,7 +16,7 @@ tags: []
 # range specifiers can be set and are separated by ','
 dependencies: {}
 
-repository: https://github.com/kencx/ansible
+repository: https://github.com/kencx/ansible-collection
 
 # documentation: http://docs.example.com
 # homepage: http://example.com
