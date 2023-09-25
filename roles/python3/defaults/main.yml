@@ -1,4 +1,0 @@
-latest_python_version: 3.9
-python_package: python3.9
-
-install_pipx: true

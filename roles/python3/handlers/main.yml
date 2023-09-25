@@ -1,4 +1,0 @@
----
-- name: Pipx ensurepath
-  command: "pipx ensurepath"
-  listen: ensurepath
