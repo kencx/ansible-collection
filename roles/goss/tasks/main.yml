@@ -18,9 +18,12 @@
     full_goss_filepath: "{{ goss_remote_dir }}/{{ goss_file }}"
 
 - name: Count number of files
-  shell: |
-    set -o pipefail
-    ls {{ goss_remote_dir }} | wc -l
+  shell:
+    cmd: |
+      set -o pipefail
+      ls {{ goss_remote_dir }} | wc -l
+    executable: /bin/bash
+
   changed_when: false
   register: num_of_files
 
@@ -32,9 +35,11 @@
 
 - name: Goss Validate (rendered)
   become: true
-  shell: |
-    set -o pipefail
-    goss -g {{ full_goss_filepath }} render | goss -g - validate
+  shell:
+    cmd: |
+      set -o pipefail
+      goss -g {{ full_goss_filepath }} render | goss -g - validate
+    executable: /bin/bash
   changed_when: false
   when: num_of_files.stdout | int > 1
 
