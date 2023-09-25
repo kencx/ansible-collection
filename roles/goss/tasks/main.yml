@@ -1,5 +1,6 @@
 ---
-- import_tasks: install.yml
+- name: Install Goss
+  import_tasks: install.yml
 
 - name: Copy Goss directory
   become: true
@@ -17,7 +18,9 @@
     full_goss_filepath: "{{ goss_remote_dir }}/{{ goss_file }}"
 
 - name: Count number of files
-  shell: "ls {{ goss_remote_dir }} | wc -l"
+  shell: |
+    set -o pipefail
+    ls {{ goss_remote_dir }} | wc -l
   changed_when: false
   register: num_of_files
 
@@ -29,7 +32,9 @@
 
 - name: Goss Validate (rendered)
   become: true
-  shell: "goss -g {{ full_goss_filepath }} render | goss -g - validate"
+  shell: |
+    set -o pipefail
+    goss -g {{ full_goss_filepath }} render | goss -g - validate
   changed_when: false
   when: num_of_files.stdout | int > 1
 

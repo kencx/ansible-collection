@@ -8,7 +8,7 @@
   pip:
     name: pipx
 
-  # install on user
+# install on user
 - name: Install Ansible with pipx
   become: true
   become_user: "{{ user }}"

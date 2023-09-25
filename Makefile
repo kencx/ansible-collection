@@ -8,6 +8,9 @@ install:
 pre-commit:
 	pre-commit run --all-files
 
+lint:
+	ansible-lint */**
+
 # molecule commands
 mol = create converge verify destroy test login prepare
 $(mol):

@@ -14,7 +14,8 @@
     group: root
     state: directory
 
-- include_tasks: create_cert.yml
+- name: Create certificates
+  include_tasks: create_cert.yml
   with_items: "{{ certbot_certs }}"
 
 - name: Start and enable certbot timer

@@ -1,7 +1,8 @@
 ---
 - name: Lookup latest version of goss
   set_fact:
-    goss_version: "{{ (lookup('url', 'https://api.github.com/repos/goss-org/goss/releases/latest', split_lines=False) | from_json).get('tag_name') | replace('v', '') }}"
+    goss_version: |
+      "{{ (lookup('url', 'https://api.github.com/repos/goss-org/goss/releases/latest', split_lines=False) | from_json).get('tag_name') | replace('v', '') }}"
   when: "goss_version == 'latest'"
 
 - name: Check goss releases

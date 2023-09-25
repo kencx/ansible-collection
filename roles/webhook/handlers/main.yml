@@ -1,10 +1,10 @@
 ---
-- name: reload webhook
+- name: Reload webhook
   systemd:
     name: webhook
     state: reloaded
 
-- name: restart webhook
+- name: Restart webhook
   systemd:
     name: webhook
     state: restarted

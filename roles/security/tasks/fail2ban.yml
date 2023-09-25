@@ -13,4 +13,4 @@
     owner: root
     group: root
     mode: 0644
-  notify: restart fail2ban
+  notify: Restart fail2ban

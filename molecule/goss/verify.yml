@@ -5,3 +5,4 @@
   tasks:
     - name: Check goss is installed
       command: "goss --version"
+      changed_when: false

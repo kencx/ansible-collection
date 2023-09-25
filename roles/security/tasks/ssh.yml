@@ -4,7 +4,7 @@
     name: openssh-server
     state: present
 
-  # required for validation
+# required for validation
 - name: Create /run/sshd
   file:
     path: "/run/sshd"
@@ -15,11 +15,11 @@
 
 - name: Update sshd configuration
   template:
-    src: ../templates/sshd_config.local.j2
+    src: sshd_config.local.j2
     dest: /etc/ssh/sshd_config
     owner: root
     group: root
     mode: '0600'
     validate: 'sshd -t -f %s'
     backup: true
-  notify: restart ssh
+  notify: Restart ssh

@@ -7,7 +7,7 @@
 
 - name: Mount NFS share
   become: true
-  mount:
+  ansible.posix.mount:
     fstype: nfs
     src: "{{ item.src }}"
     path: "{{ item.path }}"

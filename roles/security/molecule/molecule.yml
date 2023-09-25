@@ -12,21 +12,21 @@ platforms:
     cpus: 1
     memory: 512
 
-  # docker
-  # - name: ubuntu2004
-  #   image: "geerlingguy/docker-ubuntu2004-ansible:latest"
-  #   pre_build_image: true
-  #   privileged: true
-  #   command: ${MOLECULE_DOCKER_COMMAND:-""}
-  #   volumes:
-  #     - /sys/fs/cgroup:/sys/fs/cgroup:ro
-  # - name: debian10
-  #   image: "geerlingguy/docker-debian10-ansible:latest"
-  #   pre_build_image: true
-  #   privileged: true
-  #   command: ${MOLECULE_DOCKER_COMMAND:-""}
-  #   volumes:
-  #     - /sys/fs/cgroup:/sys/fs/cgroup:ro
+# docker
+# - name: ubuntu2004
+#   image: "geerlingguy/docker-ubuntu2004-ansible:latest"
+#   pre_build_image: true
+#   privileged: true
+#   command: ${MOLECULE_DOCKER_COMMAND:-""}
+#   volumes:
+#     - /sys/fs/cgroup:/sys/fs/cgroup:ro
+# - name: debian10
+#   image: "geerlingguy/docker-debian10-ansible:latest"
+#   pre_build_image: true
+#   privileged: true
+#   command: ${MOLECULE_DOCKER_COMMAND:-""}
+#   volumes:
+#     - /sys/fs/cgroup:/sys/fs/cgroup:ro
 provisioner:
   name: ansible
 verifier:

@@ -4,12 +4,12 @@ certbot_webroot: "/var/www/letsencrypt"
 certbot_admin_email: "foo@example.com"
 
 certbot_certs: []
-  # - email: foo@example.com
-  #   webroot: /var/www/letsencrypt
-  #   domains:
-  #     - foo.example.com
-  # - domains:
-  #     - foo.example1.com
+# - email: foo@example.com
+#   webroot: /var/www/letsencrypt
+#   domains:
+#     - foo.example.com
+# - domains:
+#     - foo.example1.com
 
 certbot_create_command: >-
   certbot certonly

@@ -1,9 +1,9 @@
 namespace: kencx
 name: ansible-collection
-version: 0.1.0
+version: 0.3.0
 readme: README.md
 authors:
-- kencx <ken@cheo.dev>
+  - kencx <ken@cheo.dev>
 
 description: Useful playbooks and roles for homelab
 license:

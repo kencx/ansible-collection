@@ -1,5 +1,6 @@
 ---
-- import_tasks: install_webhook.yml
+- name: Install webhook
+  import_tasks: install_webhook.yml
 
 - name: Create hooks directory
   file:
@@ -16,7 +17,7 @@
     owner: root
     group: root
     mode: 0644
-  notify: restart webhook
+  notify: Restart webhook
 
 - name: Create empty hooks file
   file:
@@ -27,7 +28,7 @@
     state: touch
     modification_time: preserve
     access_time: preserve
-  notify: reload webhook
+  notify: Reload webhook
 
 - name: Start and enable webhook
   systemd:

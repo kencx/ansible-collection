@@ -3,7 +3,7 @@ goss_version: v0.3.23
 goss_arch_map:
   x86_64: amd64
 goss_arch: "{{ goss_arch_map[ansible_architecture] }}"
-goss_tar: "goss-{{ ansible_system|lower }}-{{ goss_arch }}"
+goss_tar: "goss-{{ ansible_system | lower }}-{{ goss_arch }}"
 remove_goss_binary: false
 
 goss_dir: "files"

@@ -7,7 +7,7 @@
 
 - name: Enable and configure ufw incoming/outgoing rules
   become: true
-  ufw:
+  community.general.ufw:
     direction: "{{ item.direction }}"
     policy: "{{ item.policy }}"
     state: enabled
@@ -17,10 +17,10 @@
 
 - name: Configure ufw ports
   become: true
-  ufw:
+  community.general.ufw:
     rule: "{{ item.rule }}"
     port: "{{ item.port }}"
     proto: "{{ item.proto }}"
     comment: "{{ item.comment | default('') }}"
   with_items: "{{ ufw_default_rules + ufw_rules }}"
-  notify: restart ufw
+  notify: Restart ufw
