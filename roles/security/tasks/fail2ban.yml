@@ -1,16 +1,20 @@
 ---
 - name: Install fail2ban
-  become: true
-  apt:
+  package:
     name: fail2ban
     state: present
 
-- name: Copy fail2ban custom config file
-  become: true
+- name: Add sshd jail config
   template:
-    src: "{{ fail2ban_config_file }}"
-    dest: /etc/fail2ban/jail.local
+    src: sshd.local.j2
+    dest: /etc/fail2ban/jail.d/sshd.local
     owner: root
     group: root
     mode: 0644
   notify: Restart fail2ban
+
+- name: Start and enable fail2ban
+  service:
+    name: fail2ban
+    enabled: true
+    state: started

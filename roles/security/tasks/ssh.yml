@@ -1,13 +1,13 @@
 ---
 - name: Install openssh-server
-  apt:
+  package:
     name: openssh-server
     state: present
 
 # required for validation
-- name: Create /run/sshd
+- name: Create /run/sshd.pid
   file:
-    path: "/run/sshd"
+    path: "/run/sshd.pid"
     owner: root
     group: root
     mode: 0755

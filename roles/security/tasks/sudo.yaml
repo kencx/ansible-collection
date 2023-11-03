@@ -1,11 +1,12 @@
 ---
 - name: Add sudo rights
-  become: true
-  lineinfile:
-    dest: /etc/sudoers
-    regexp: "^{{ item }}"
-    line: "{{ item }} ALL=(ALL) ALL"
-    state: present
-    validate: 'visudo -cf %s'
+  copy:
+    content: |
+      {% for group in sudoers %}
+      %{{ group }} ALL=(ALL:ALL) ALL
+      {% endfor %}
+    dest: "/etc/sudoers.d/01-wheel"
+    owner: root
+    group: root
     mode: 0644
-  with_items: "{{ sudoers }}"
+    validate: 'visudo -cf %s'

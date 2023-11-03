@@ -1,12 +1,10 @@
 ---
 - name: Install ufw
-  become: true
-  apt:
+  package:
     name: ufw
     state: present
 
 - name: Enable and configure ufw incoming/outgoing rules
-  become: true
   community.general.ufw:
     direction: "{{ item.direction }}"
     policy: "{{ item.policy }}"
@@ -16,7 +14,6 @@
     - {direction: incoming, policy: deny}
 
 - name: Configure ufw ports
-  become: true
   community.general.ufw:
     rule: "{{ item.rule }}"
     port: "{{ item.port }}"
