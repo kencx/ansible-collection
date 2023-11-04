@@ -1,12 +1,27 @@
 ---
-- name: Install webhook
+- name: Install webhook from source
   import_tasks: install_webhook.yml
+  when:
+    - ansible_distribution == "Ubuntu" or ansible_distribution == "Debian"
+
+- name: Install webhook (Alpine)
+  apk:
+    name: webhook
+    state: present
+  when: ansible_distribution == "Alpine"
+
+- name: Create webhook user
+  user:
+    name: webhook
+    group: webhook
+    create_home: false
+    state: present
 
 - name: Create hooks directory
   file:
     path: "{{ webhook_hooks_dir }}"
-    owner: root
-    group: root
+    owner: webhook
+    group: webhook
     mode: 0755
     state: directory
 
@@ -17,13 +32,24 @@
     owner: root
     group: root
     mode: 0644
+  when: ansible_service_mgr == "systemd"
+  notify: Restart webhook
+
+- name: Copy webhook init script
+  template:
+    src: "webhook.init.j2"
+    dest: "/etc/init.d/webhook"
+    owner: root
+    group: root
+    mode: 0755
+  when: ansible_service_mgr == "openrc"
   notify: Restart webhook
 
 - name: Create empty hooks file
   file:
     path: "{{ webhook_hooks_dir }}/hooks.yml"
-    owner: root
-    group: root
+    owner: webhook
+    group: webhook
     mode: 0644
     state: touch
     modification_time: preserve
@@ -31,7 +57,7 @@
   notify: Reload webhook
 
 - name: Start and enable webhook
-  systemd:
+  service:
     name: webhook
     state: started
     enabled: true

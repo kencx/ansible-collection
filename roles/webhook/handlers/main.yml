@@ -1,11 +1,11 @@
 ---
 - name: Reload webhook
-  systemd:
+  service:
     name: webhook
     state: reloaded
 
 - name: Restart webhook
-  systemd:
+  service:
     name: webhook
     state: restarted
     daemon_reload: true

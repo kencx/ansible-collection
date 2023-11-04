@@ -1,0 +1,12 @@
+#!/sbin/openrc-run
+
+name="webhook"
+description="webhook server"
+
+command="/usr/bin/webhook"
+command_args="-ip 127.0.0.1 -port {{ webhook_port }} -hooks {{ webhook_hooks_dir }}/hooks.yml -verbose -hotreload -logfile /var/log/${RC_SVCNAME}.log &"
+command_user="webhook"
+
+depend() {
+        need net
+}
