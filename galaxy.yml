@@ -1,5 +1,5 @@
 namespace: kencx
-name: ansible-collection
+name: ansible_collection
 version: 0.4.0
 readme: README.md
 authors:

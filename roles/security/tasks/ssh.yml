@@ -10,8 +10,8 @@
     path: "/run/sshd.pid"
     owner: root
     group: root
-    mode: 0755
-    state: directory
+    mode: 0644
+    state: file
 
 - name: Update sshd configuration
   template:
