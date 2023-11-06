@@ -10,6 +10,11 @@
     state: present
   when: ansible_distribution == "Alpine"
 
+- name: Create webhook group
+  group:
+    name: webhook
+    state: present
+
 - name: Create webhook user
   user:
     name: webhook
